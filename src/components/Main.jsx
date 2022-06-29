@@ -17,7 +17,7 @@ function LinkWeb(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="www.galletasqro.com">
+      <Link color="inherit" href="https://www.galletasqro.com/">
         www.Galletasqro.com
       </Link>{' '}
       {new Date().getFullYear()}
