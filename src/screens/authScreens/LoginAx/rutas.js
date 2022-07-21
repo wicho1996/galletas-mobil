@@ -1,9 +1,10 @@
 import axiosSystem from "../../../utils/axiosSystem";
 
-const getClientes = () => {
+const rutas = () => {
     return {
-        getClientes: axiosSystem("Login/validarUsuario")
+        getClientes: axiosSystem("Login/getEmpleados"),
+        inciarSesion: axiosSystem("Login/inciarSesion"),
     }
 }
 
-export default getRutas;
+export default rutas;
