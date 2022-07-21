@@ -18,9 +18,9 @@ export default function Card() {
           source={require('../../assets/memojis/11.png')}
           style={styles.img}
         />
+        <Text style={styles.name}>¡Bienvenido!</Text>
         <Text style={styles.name}>{userToken}</Text>
       </View>
-      <MyButton title={'Add Friend'} onPress={doSomething} />
     </View>
   );
 }
