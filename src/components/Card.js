@@ -1,9 +1,15 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image , Button } from 'react-native';
 import { Colors } from '../constants/colors';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { signOut } from '../features/auth/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyButton from './MyButton';
 
 export default function Card() {
+
+  const dispatch = useDispatch();
+
   const { userToken } = useSelector(state => state.auth);
 
   function doSomething() {
@@ -21,10 +27,19 @@ export default function Card() {
         <Text style={styles.name}>¡Bienvenido!</Text>
         <Text style={styles.name}>{userToken}</Text>
       </View>
+      <MyButton  
+        title="Cerrar sesión"
+        onPress={async () => {
+          await AsyncStorage.removeItem('@token');
+          dispatch(signOut());
+        }}
+      />
     </View>
   );
 }
 
+
+//Estilo Card
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'snow',
