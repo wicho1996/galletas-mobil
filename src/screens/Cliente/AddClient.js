@@ -24,6 +24,8 @@ export default function AddClient({ navigation }) {
 }
 
 
+
+
 const styles = StyleSheet.create({
   //Estilo del Mapa
   map: {
