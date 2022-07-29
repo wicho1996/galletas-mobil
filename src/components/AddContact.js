@@ -18,9 +18,9 @@ export default function AddContact() {
   return (
     <View style={styles.container}>
       <View style={{ width: '80%' }}>
-        <MyInput label={'Add Contact'} value={name} onChangeText={setName} />
+        <MyInput label={'Buscar'} value={name} onChangeText={setName} />
       </View>
-      <Button title="Add" color={Colors.primary} onPress={handleAdd} />
+      <Button title="Buscar" color={Colors.primary} onPress={handleAdd} />
     </View>
   );
 }

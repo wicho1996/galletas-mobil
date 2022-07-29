@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { signIn } from '../../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import MapView from 'react-native-maps';
+import Mapa from '../../components/MapClient';
+
 
 export default function AddClient({ navigation }) {
 
@@ -17,7 +18,7 @@ export default function AddClient({ navigation }) {
     <View style={globalStyles.screenContainer}>
       <Text style={globalStyles.title}>Nombre de la tienda</Text>
       <MyInput  label="Nombre de tienda" />
-      <MapView style={styles.map}/>
+      <Mapa/>
        <MyButton title="Registrar" onPress={() => submitLogin } />
     </View>
   );
@@ -25,11 +26,3 @@ export default function AddClient({ navigation }) {
 
 
 
-
-const styles = StyleSheet.create({
-  //Estilo del Mapa
-  map: {
-    width: '100%',
-    height: '100%'
-  }
-});
