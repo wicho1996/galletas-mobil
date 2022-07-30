@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { signOut } from '../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MyButton from './MyButton';
+import MapView from 'react-native-maps';
 
 export default function Card() {
 

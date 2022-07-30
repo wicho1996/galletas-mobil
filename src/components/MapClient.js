@@ -1,15 +1,62 @@
+import * as React from 'react';
+import * as Location from 'expo-location';
 import { View , StyleSheet, Dimensions} from 'react-native';
 import { Colors } from '../constants/colors';
 import { globalStyles } from '../styles/global';
-import React from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 
 export default function Home() {
+
+  const carImage = require('../../assets/image/tienda4.png')
+
+  
+  const [origin, setOrigin] = React.useState({
+    latitude: 0.0,
+    longitude: 0.0,
+  });
+
+  React.useEffect(() => {
+    getLocationPermission();
+  }, [])
+
+  async function getLocationPermission() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if(status !== 'granted') {
+      alert('Permission denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const current = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude
+    }
+    setOrigin(current);
+  }
+
+
+
   return (
     <View style={globalStyles.screenContainer}>
      <View style={styles.card}>
 
-     <MapView style={styles.map} />
+     <MapView 
+
+      style={styles.map}
+      initialRegion={{
+      latitude: origin.latitude,
+      longitude: origin.longitude,
+      latitudeDelta: 0.09,
+      longitudeDelta: 0.04
+    }}
+    >
+     <Marker 
+          draggable
+          coordinate={origin}
+          image={carImage}
+          onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
+        />
+
+    </MapView>
     </View>
     </View>
 

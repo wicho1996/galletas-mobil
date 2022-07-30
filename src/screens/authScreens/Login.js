@@ -30,9 +30,6 @@ export default function Login({ navigation }) {
 
   const rutas = Rutas();
 
-  useEffect(() => {
-    inciarSesion();
-  }, []);
 
   const getEmpleados = () => {
     rutas.getClientes(
@@ -42,13 +39,13 @@ export default function Login({ navigation }) {
     );
   };
 
-  const inciarSesion = () => {
+/*   const inciarSesion = () => {
     rutas.inciarSesion(
       res => {
         console.log(res);
       }, { usuario: 'wicho', contraseña: '869DB0DF3CD744C87C34C80B4DAB1CAB' }
     );
-  };
+  }; */ 
 
   //Guardado Local
   const [token, setToken] = useState('');
@@ -67,6 +64,12 @@ export default function Login({ navigation }) {
 
   //AxiosConexion
   const submitLogin = async () => {
+
+
+    useEffect(() => {
+      inciarSesion();
+    }, []);
+
     try {
 
 
