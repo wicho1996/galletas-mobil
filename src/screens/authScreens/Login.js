@@ -110,7 +110,7 @@ export default function Login({ navigation }) {
       placeholder='********'
       autoCapitalize='none'
       />
-      <MyButton title="Login" onPress={() => save(token)} />
+      <MyButton title="Login" onPress={() => save(usuario)} />
       <MyButton title="BD" onPress={() => submitLogin} />
       <MyButton title="Sign Up" onPress={() => navigation.navigate('SignUp')} />
     </View>

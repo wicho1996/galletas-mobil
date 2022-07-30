@@ -11,8 +11,8 @@ export default function Home() {
 
   
   const [origin, setOrigin] = React.useState({
-    latitude: 0.0,
-    longitude: 0.0,
+    latitude:   0.0,
+    longitude:  0.0,
   });
 
   React.useEffect(() => {
@@ -40,13 +40,14 @@ export default function Home() {
      <View style={styles.card}>
 
      <MapView 
-
       style={styles.map}
       initialRegion={{
       latitude: origin.latitude,
       longitude: origin.longitude,
-      latitudeDelta: 0.09,
-      longitudeDelta: 0.04
+      latitudeDelta: 20.620392,
+      longitudeDelta: -100.421120
+
+
     }}
     >
      <Marker 
