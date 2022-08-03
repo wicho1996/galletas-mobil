@@ -29,7 +29,11 @@ export default function Home() {
   React.useEffect(() => {
     getValue();
     getLocationPermission();
-    setOrigin({ ...origin, latitude: LongUbication?.latitude || 0, longitude: LongUbication?.longitude || 0 });
+
+    const latitude = LongUbication?.latitude || 0;
+    const longitude = LongUbication?.latitude || 0;
+    setOrigin({ ...origin, latitude, longitude });
+
     console.log('Latitud ='+ LongUbication?.latitude || '');
     console.log('Longitud ='+ LongUbication?.longitude || '');
   
@@ -82,8 +86,8 @@ export default function Home() {
     const current = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
-      latitudeDelta: Math.abs(Math.abs(origin.latitude)) + 20,
-      longitudeDelta: Math.abs(Math.abs(origin.longitude)) + 20,
+      latitudeDelta: 0.001,
+      longitudeDelta: 0.001,
     }
 
     setOrigin(current);
