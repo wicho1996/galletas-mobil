@@ -30,7 +30,7 @@ export default function Login({ navigation }) {
 
 //Variables para login
   const [userInfo, setUserInfo] = useState({
-    email: '',
+    usuario: '',
     password: '',
   });
 
@@ -108,25 +108,22 @@ async function setLatitude(value) {
   //AxiosConexion
   const submitLogin = async () => {
 
+    rutas.inciarSesion(
+      res => {
+        alert(res.mensaje);
+      }, { usuario: userInfo.usuario, contraseña: userInfo.contraseña }
+    );
 
-    try {
-
-
-      rutas.inciarSesion(
-        res => {
-          console.log(res);
-        }, { usuario: userInfo.email, contraseña: userInfo.password }
-      );
-
-      if (res.data.success) {
-        setUserInfo({ user: '', password: '' });
+    // try {
+    //   // if (res.data.success) {
+    //   //   setUserInfo({ user: '', password: '' });
       
-      }
+    //   // }
 
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+    //   // console.log(res.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
 
@@ -172,7 +169,7 @@ async function setLatitude(value) {
       autoCapitalize='none'
       />
       <MyButton title="Login" onPress={() => save(usuario)} />
-      <MyButton title="BD" onPress={() => submitLogin} />
+      <MyButton title="BD" onPress={submitLogin} />
       <MyButton title="Sign Up" onPress={() => navigation.navigate('SignUp')} />
     </View>
   );
