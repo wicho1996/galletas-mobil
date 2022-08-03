@@ -13,6 +13,8 @@ import Mapa from '../../components/MapClient';
 export default function AddClient({ navigation }) {
 
 
+
+  
 //Retorno de login.js
   return (
     <View style={globalStyles.screenContainer}>

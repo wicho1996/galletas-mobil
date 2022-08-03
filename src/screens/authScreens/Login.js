@@ -4,12 +4,29 @@ import MyButton from '../../components/MyButton';
 import MyInput from '../../components/MyInput';
 import { globalStyles } from '../../styles/global';
 import { useDispatch } from 'react-redux';
-import { signIn } from '../../features/auth/auth';
+import { setLat, setLon, SetUbication, signIn } from '../../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 
 import Rutas from './LoginAx/rutas';
 
 export default function Login({ navigation }) {
+
+
+  
+  useEffect(() => {
+    getLocationPermission();
+  }, []);
+
+  const [origin, setOrigin] = useState({
+
+    latitude:     20.5931,
+    longitude:   100.392,
+    latitudeDelta:    0.1,
+    longitudeDelta:   0.2,
+
+
+  });
 
 //Variables para login
   const [userInfo, setUserInfo] = useState({
@@ -39,13 +56,17 @@ export default function Login({ navigation }) {
     );
   };
 
-/*   const inciarSesion = () => {
-    rutas.inciarSesion(
-      res => {
-        console.log(res);
-      }, { usuario: 'wicho', contraseña: '869DB0DF3CD744C87C34C80B4DAB1CAB' }
-    );
-  }; */ 
+//const inciarSesion = () => {
+//    rutas.inciarSesion(
+//      res => {
+//        console.log(res);
+//      }, { usuario: 'wicho', contraseña: '869DB0DF3CD744C87C34C80B4DAB1CAB' }
+//    );
+//  };
+
+
+
+
 
   //Guardado Local
   const [token, setToken] = useState('');
@@ -62,13 +83,31 @@ export default function Login({ navigation }) {
       }
     }
 
+ //Gurda localmente ubicación el usuario
+ async function setLongitude(value) {
+  try {
+    await AsyncStorage.setItem('@longstore',''+value);
+    dispatch(setLon(value));
+    console.log('Longitud ='+ value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function setLatitude(value) {
+  try {
+    await AsyncStorage.setItem('@latistore',''+value);
+    dispatch(setLat(value));
+    console.log('Latitud ='+ value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
   //AxiosConexion
   const submitLogin = async () => {
 
-
-    useEffect(() => {
-      inciarSesion();
-    }, []);
 
     try {
 
@@ -91,6 +130,28 @@ export default function Login({ navigation }) {
   };
 
 
+  async function getLocationPermission() {
+
+
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if(status !== 'granted') {
+      alert('Permission denied');
+      return;
+    }
+    let location = await Location.getCurrentPositionAsync({});
+    const current = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: Math.abs(Math.abs(origin.latitude)) + 20,
+      longitudeDelta: Math.abs(Math.abs(origin.longitude)) + 20,
+    }
+
+    setOrigin(current);
+    setLongitude(current.longitude);
+    setLatitude(current.latitude);
+   
+  
+  }
 
   //Retorno de login.js
   return (

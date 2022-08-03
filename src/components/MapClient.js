@@ -4,22 +4,74 @@ import { View , StyleSheet, Dimensions} from 'react-native';
 import { Colors } from '../constants/colors';
 import { globalStyles } from '../styles/global';
 import MapView, { Marker, Polyline } from 'react-native-maps';
+import { useSelector, useDispatch } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Splash from '../screens/Splash';
 
 export default function Home() {
 
-  const carImage = require('../../assets/image/tienda4.png')
+  const { LongUbication, isLoading  } = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   
+  const carImage = require('../../assets/image/tienda4.png')
   const [origin, setOrigin] = React.useState({
-    latitude:   0.0,
-    longitude:  0.0,
+
+    latitude:         0.1,
+    longitude:        1.0,
+    latitudeDelta:    0.1,
+    longitudeDelta:   0.2,
+
+
   });
 
+
   React.useEffect(() => {
+    getValue();
     getLocationPermission();
+    console.log('Latitud ='+ LongUbication.latitude);
+    console.log('Longitud ='+ LongUbication.longitude);
+  
   }, [])
 
+
+
+
+
+
+
+
+  async function getValue() {
+    try {
+
+
+      const [value] = React.useState({
+
+        valueLatitu : await AsyncStorage.getItem('@latistore'),
+        valuelong : await AsyncStorage.getItem('@longstore')
+    
+    
+      });
+   
+      if (value.valueLatitu !== null || value-longitude !== null) {
+        console.log('data restored', value);
+
+      
+        //dispatch(restoreToken(value));
+        return value;
+      } else {
+        console.log('no data');
+        //dispatch(restoreToken(null));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   async function getLocationPermission() {
+
+
     let { status } = await Location.requestForegroundPermissionsAsync();
     if(status !== 'granted') {
       alert('Permission denied');
@@ -28,12 +80,19 @@ export default function Home() {
     let location = await Location.getCurrentPositionAsync({});
     const current = {
       latitude: location.coords.latitude,
-      longitude: location.coords.longitude
+      longitude: location.coords.longitude,
+      latitudeDelta: Math.abs(Math.abs(origin.latitude)) + 20,
+      longitudeDelta: Math.abs(Math.abs(origin.longitude)) + 20,
     }
+
     setOrigin(current);
   }
 
 
+  if (isLoading) {
+   
+    return <Splash />;
+  }
 
   return (
     <View style={globalStyles.screenContainer}>
@@ -41,14 +100,15 @@ export default function Home() {
 
      <MapView 
       style={styles.map}
-      initialRegion={{
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      latitudeDelta: 20.620392,
-      longitudeDelta: -100.421120
+          initialRegion={{
+          latitude: origin.latitude,
+          longitude: origin.longitude,
+          latitudeDelta: origin.latitudeDelta/1.2,
+          longitudeDelta: origin.longitudeDelta/1.2,
 
-
-    }}
+          
+          }}
+    
     >
      <Marker 
           draggable
@@ -91,6 +151,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   map: {
+
+
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
   },

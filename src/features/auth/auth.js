@@ -4,6 +4,8 @@ const initialState = {
   userToken: null,
   isLoading: true,
   isSignout: false,
+  LongUbication: null,
+  LatUbication: null,
 };
 
 const authSlice = createSlice({
@@ -22,8 +24,16 @@ const authSlice = createSlice({
       state.isSignout = true;
       state.userToken = null;
     },
+    setLon: (state, action) => {
+      state.LongUbication = action.payload;
+      state.isLoading = false;
+    },
+    setLat: (state, action) => {
+      state.LatUbication = action.payload;
+      state.isLoading = false;
+    },
   },
 });
 
-export const { restoreToken, signIn, signOut } = authSlice.actions;
+export const { restoreToken, signIn, signOut , setLon , setLat } = authSlice.actions;
 export default authSlice.reducer;
