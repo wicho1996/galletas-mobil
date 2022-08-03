@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Location from 'expo-location';
-import { View , StyleSheet, Dimensions} from 'react-native';
+import { View , StyleSheet, Dimensions, Text } from 'react-native';
 import { Colors } from '../constants/colors';
 import { globalStyles } from '../styles/global';
 import MapView, { Marker, Polyline } from 'react-native-maps';
@@ -17,7 +17,7 @@ export default function Home() {
   const carImage = require('../../assets/image/tienda4.png')
   const [origin, setOrigin] = React.useState({
 
-    latitude:         0.1,
+    latitude:         0.0,
     longitude:        1.0,
     latitudeDelta:    0.1,
     longitudeDelta:   0.2,
@@ -29,8 +29,9 @@ export default function Home() {
   React.useEffect(() => {
     getValue();
     getLocationPermission();
-    console.log('Latitud ='+ LongUbication.latitude);
-    console.log('Longitud ='+ LongUbication.longitude);
+    setOrigin({ ...origin, latitude: LongUbication?.latitude || 0, longitude: LongUbication?.longitude || 0 });
+    console.log('Latitud ='+ LongUbication?.latitude || '');
+    console.log('Longitud ='+ LongUbication?.longitude || '');
   
   }, [])
 
@@ -98,26 +99,30 @@ export default function Home() {
     <View style={globalStyles.screenContainer}>
      <View style={styles.card}>
 
-     <MapView 
-      style={styles.map}
-          initialRegion={{
-          latitude: origin.latitude,
-          longitude: origin.longitude,
-          latitudeDelta: origin.latitudeDelta/1.2,
-          longitudeDelta: origin.longitudeDelta/1.2,
+     { origin.latitude != 0
+        // ?<Text>Hola</Text>
+        ? <MapView 
+        style={styles.map}
+            initialRegion={{
+            latitude: origin.latitude,
+            longitude: origin.longitude,
+            latitudeDelta: origin.latitudeDelta/1.2,
+            longitudeDelta: origin.longitudeDelta/1.2,
 
-          
-          }}
-    
-    >
-     <Marker 
-          draggable
-          coordinate={origin}
-          image={carImage}
-          onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
-        />
+            
+            }}
+      
+      >
+      <Marker 
+            draggable
+            coordinate={origin}
+            image={carImage}
+            onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
+          />
 
-    </MapView>
+      </MapView> 
+      : null
+     }
     </View>
     </View>
 
