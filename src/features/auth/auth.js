@@ -4,8 +4,12 @@ const initialState = {
   userToken: null,
   isLoading: true,
   isSignout: false,
+
   LongUbication: null,
+
   LatUbication: null,
+  isLoadingGPS: true,
+  isdeletedGPS: false,
 };
 
 const authSlice = createSlice({
@@ -26,14 +30,25 @@ const authSlice = createSlice({
     },
     setLon: (state, action) => {
       state.LongUbication = action.payload;
-      state.isLoading = false;
+      state.isLoadingGPS = false;
+
     },
     setLat: (state, action) => {
       state.LatUbication = action.payload;
-      state.isLoading = false;
+      state.isLoadingGPS = false;
+
+    },
+    deleteGPS: state => {
+      state.isdeletedGPS = true;
+      state.LatUbication = null;
+          
+    },
+    restoreGPS:  (state, action) =>  {
+      state.LatUbication = action.payload;
+      state.isLoadingGPS = false;
     },
   },
 });
 
-export const { restoreToken, signIn, signOut , setLon , setLat } = authSlice.actions;
+export const { restoreToken, signIn, signOut , setLon , setLat, deleteGPS, restoreGPS } = authSlice.actions;
 export default authSlice.reducer;

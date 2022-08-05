@@ -4,7 +4,7 @@ import { globalStyles } from '../styles/global';
 export default function Splash() {
   return (
     <View style={globalStyles.screenContainer}>
-      <Text style={globalStyles.title}>Welcome</Text>
+      <Text style={globalStyles.title}>Cargando...</Text>
       <ActivityIndicator size="large" />
     </View>
   );

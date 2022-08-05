@@ -6,6 +6,8 @@ const initialState = [
   { id: 2, name: 'Jack Doe' },
 ];
 
+
+
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,

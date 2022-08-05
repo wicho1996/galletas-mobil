@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { setLat, setLon, SetUbication, signIn } from '../../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-
 import Rutas from './LoginAx/rutas';
 
 export default function Login({ navigation }) {
@@ -17,6 +16,8 @@ export default function Login({ navigation }) {
   useEffect(() => {
     getLocationPermission();
   }, []);
+
+
 
   const [origin, setOrigin] = useState({
 
@@ -110,20 +111,27 @@ async function setLatitude(value) {
 
     rutas.inciarSesion(
       res => {
-        alert(res.mensaje);
+      
+       
+
+        if(res.mensaje=="Datos incorrectos")
+        {
+          console.log(res.mensaje);
+          alert(res.mensaje);
+
+        }else{
+
+          save(usuario);
+          alert(res.mensaje);
+
+
+        }
+
+
+
+
       }, { usuario: userInfo.usuario, contraseña: userInfo.contraseña }
     );
-
-    // try {
-    //   // if (res.data.success) {
-    //   //   setUserInfo({ user: '', password: '' });
-      
-    //   // }
-
-    //   // console.log(res.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
 
@@ -168,9 +176,9 @@ async function setLatitude(value) {
       placeholder='********'
       autoCapitalize='none'
       />
-      <MyButton title="Login" onPress={() => save(usuario)} />
-      <MyButton title="BD" onPress={submitLogin} />
-      <MyButton title="Sign Up" onPress={() => navigation.navigate('SignUp')} />
+   
+      <MyButton title="Iniciar sesión" onPress={submitLogin} />
+     
     </View>
   );
 }
