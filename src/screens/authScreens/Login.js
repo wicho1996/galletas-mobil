@@ -4,10 +4,11 @@ import MyButton from '../../components/MyButton';
 import MyInput from '../../components/MyInput';
 import { globalStyles } from '../../styles/global';
 import { useDispatch } from 'react-redux';
-import { setLat, setLon, SetUbication, signIn } from '../../features/auth/auth';
+import { setLat, setLon,signIn } from '../../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import Rutas from './LoginAx/rutas';
+import React from 'react';
 
 export default function Login({ navigation }) {
 
@@ -120,7 +121,7 @@ async function setLatitude(value) {
           alert(res.mensaje);
 
         }else{
-
+          setToken(usuario);
           save(usuario);
           alert(res.mensaje);
 
@@ -176,9 +177,7 @@ async function setLatitude(value) {
       placeholder='********'
       autoCapitalize='none'
       />
-   
       <MyButton title="Iniciar sesión" onPress={submitLogin} />
-     
     </View>
   );
 }

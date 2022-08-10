@@ -7,8 +7,12 @@ import { restoreToken } from '../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Splash from '../screens/Splash';;
 import * as Location from 'expo-location';
+import Rutas from './RootAx/rutas';
+
 
 export default function RootNavigator() {
+
+  const rutas = Rutas();
 
   const [origin, setOrigin] = React.useState({
 
@@ -23,10 +27,40 @@ export default function RootNavigator() {
 
   React.useEffect(() => {
     getValue();
+
+
     setInterval(getLocationPermission, 9000);
   
 
   }, []);
+
+
+
+  const updateBD = async (id,lati,long) => {
+
+    rutas.actualizarGPS(
+      res => {
+      
+        if(res.mensaje=="Datos incorrectos")
+        {
+          console.log(res.mensaje);
+          alert(res.mensaje);
+
+        }else{
+
+        
+          alert(res.mensaje);
+
+
+        }
+
+
+
+
+      }, { lati, long, id }
+    );
+  };
+
 
 
   async function getLocationPermission() {
@@ -48,9 +82,17 @@ export default function RootNavigator() {
 
  
     setOrigin(current);
-    console.log("Latitud tiempo real " + current.latitude);
-    console.log("Longitud tiempo real " + current.longitude);
+    
 
+    const valuetiemporeal = await AsyncStorage.getItem('@token');
+   
+    if (valuetiemporeal!==null){
+      //updateBD(current.latitude,current.longitude,1);
+   
+      console.log("Latitud tiempo real " + current.latitude);
+      console.log("Longitud tiempo real " + current.longitude);
+    }
+   
   }
 
 
@@ -74,7 +116,7 @@ export default function RootNavigator() {
     return <Splash />;
   }
   return (
-    <NavigationContainer>
+    <NavigationContainer> 
       {userToken ? <MyDrawer /> : <AuthStack />}
     </NavigationContainer>
   );
