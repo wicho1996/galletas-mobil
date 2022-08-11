@@ -59,6 +59,7 @@ async function setLatitude(value) {
       return;
     }
     let location = await Location.getCurrentPositionAsync({});
+
     const current = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
@@ -69,6 +70,12 @@ async function setLatitude(value) {
 
  
     setOrigin(current);
+    setLatitude(current.latitude);
+    setLongitude(current.longitude);
+    
+  }
+  async function updateMarker(current) {
+
     setLatitude(current.latitude);
     setLongitude(current.longitude);
     
@@ -98,7 +105,8 @@ async function setLatitude(value) {
             draggable
             coordinate={origin}
             image={carImage}
-            onDragEnd={(direction) => setOrigin(direction.nativeEvent.coordinate)}
+            onDragEnd={(direction) => updateMarker(direction.nativeEvent.coordinate)}
+            
           />
 
       </MapView> 
