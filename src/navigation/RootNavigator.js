@@ -40,7 +40,7 @@ export default function RootNavigator() {
 
     rutas.actualizarGPS(
       res => {
-        alert(latitud);
+        
       }, { latitud, longitud, id }
     );
   };
@@ -68,9 +68,12 @@ export default function RootNavigator() {
     
 
     const valuetiemporeal = await AsyncStorage.getItem('@token');
+    const valueid = await AsyncStorage.getItem('@id');
    
     if (valuetiemporeal!==null){
-      updateBD(1,current.latitude,current.longitude);
+
+      console.log(""+valueid);
+      updateBD(valueid,current.latitude,current.longitude);
    
       console.log("Latitud tiempo real " + current.latitude);
       console.log("Longitud tiempo real " + current.longitude);

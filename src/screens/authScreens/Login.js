@@ -4,7 +4,7 @@ import MyButton from '../../components/MyButton';
 import MyInput from '../../components/MyInput';
 import { globalStyles } from '../../styles/global';
 import { useDispatch } from 'react-redux';
-import { setLat, setLon,signIn } from '../../features/auth/auth';
+import { setLat, setLon,signIn, setId } from '../../features/auth/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import Rutas from './LoginAx/rutas';
@@ -75,9 +75,10 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
 
     //token Usuario
-    async function save(value) {
+    async function save(value,id) {
       try {
         await AsyncStorage.setItem('@token', value);
+        await AsyncStorage.setItem('idusuario', id);
         dispatch(signIn(value));
         console.log('data saved');
       } catch (error) {
@@ -90,7 +91,7 @@ export default function Login({ navigation }) {
   try {
     await AsyncStorage.setItem('@longstore',''+value);
     dispatch(setLon(value));
-    console.log('Longitud ='+ value);
+   
   } catch (error) {
     console.log(error);
   }
@@ -100,7 +101,15 @@ async function setLatitude(value) {
   try {
     await AsyncStorage.setItem('@latistore',''+value);
     dispatch(setLat(value));
-    console.log('Latitud ='+ value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function setID(value) {
+  try {
+    await AsyncStorage.setItem('@id',''+value);
+    dispatch(setLat(value));
   } catch (error) {
     console.log(error);
   }
@@ -117,12 +126,15 @@ async function setLatitude(value) {
 
         if(res.mensaje=="Datos incorrectos")
         {
-          console.log(res.data.id_movil);
+         
           alert(res.mensaje);
 
         }else{
+
+        
+          setID(res.data.id_movil);
           setToken(usuario);
-          save(usuario);
+          save(usuario,res.data.id_movil);
           alert(res.mensaje);
 
 

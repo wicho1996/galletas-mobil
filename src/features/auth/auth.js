@@ -38,17 +38,15 @@ const authSlice = createSlice({
       state.isLoadingGPS = false;
 
     },
-    deleteGPS: state => {
-      state.isdeletedGPS = true;
-      state.LatUbication = null;
-          
-    },
-    restoreGPS:  (state, action) =>  {
+    setId: (state, action) => {
       state.LatUbication = action.payload;
       state.isLoadingGPS = false;
+
     },
+    
+  
   },
 });
 
-export const { restoreToken, signIn, signOut , setLon , setLat, deleteGPS, restoreGPS } = authSlice.actions;
+export const { restoreToken, signIn, signOut , setLon , setLat, setId } = authSlice.actions;
 export default authSlice.reducer;
