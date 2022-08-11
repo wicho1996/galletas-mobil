@@ -36,45 +36,28 @@ export default function RootNavigator() {
 
 
 
-  const updateBD = async (id,lati,long) => {
+  const updateBD = async (id,latitud,longitud) => {
 
     rutas.actualizarGPS(
       res => {
-      
-        if(res.mensaje=="Datos incorrectos")
-        {
-          console.log(res.mensaje);
-          alert(res.mensaje);
-
-        }else{
-
-        
-          alert(res.mensaje);
-
-
-        }
-
-
-
-
-      }, { lati, long, id }
+        alert(latitud);
+      }, { latitud, longitud, id }
     );
   };
 
 
 
   async function getLocationPermission() {
-
-
     let { status } = await Location.requestForegroundPermissionsAsync();
     if(status !== 'granted') {
       alert('Permission denied');
       return;
     }
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+
     const current = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: location.coords.latitude.toPrecision(20),
+      longitude: location.coords.longitude.toPrecision(20),
       latitudeDelta: 0.001,
       longitudeDelta: 0.001,
   
@@ -87,7 +70,7 @@ export default function RootNavigator() {
     const valuetiemporeal = await AsyncStorage.getItem('@token');
    
     if (valuetiemporeal!==null){
-      //updateBD(current.latitude,current.longitude,1);
+      updateBD(1,current.latitude,current.longitude);
    
       console.log("Latitud tiempo real " + current.latitude);
       console.log("Longitud tiempo real " + current.longitude);
