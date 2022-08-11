@@ -9,9 +9,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Splash from '../screens/Splash';
 import { restoreGPS, deleteGPS} from '../features/auth/auth';
 import { ActivityIndicator} from 'react-native';
+import { setLat, setLon, } from '../features/auth/auth';
 
 export default function Home() {
 
+   const dispatch = useDispatch();
   const carImage = require('../../assets/image/tienda4.png')
   const [origin, setOrigin] = React.useState({
 
@@ -25,6 +27,27 @@ export default function Home() {
     getLocationPermission();
   
   }, [])
+
+ //Gurda localmente ubicación el usuario
+ async function setLongitude(value) {
+  try {
+    await AsyncStorage.setItem('@longstore',''+value);
+    dispatch(setLon(value));
+    console.log('Longitud local ='+ value);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function setLatitude(value) {
+  try {
+    await AsyncStorage.setItem('@latistore',''+value);
+    dispatch(setLat(value));
+    console.log('Latitud local='+ value);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
   async function getLocationPermission() {
@@ -46,6 +69,9 @@ export default function Home() {
 
  
     setOrigin(current);
+    setLatitude(current.latitude);
+    setLongitude(current.longitude);
+    
   }
 
   return (
