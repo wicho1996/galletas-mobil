@@ -117,7 +117,7 @@ async function setLatitude(value) {
 
         if(res.mensaje=="Datos incorrectos")
         {
-          console.log(res.mensaje);
+          console.log(res.data.id_movil);
           alert(res.mensaje);
 
         }else{
