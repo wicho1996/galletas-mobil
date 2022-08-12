@@ -7,10 +7,11 @@ import { globalStyles } from '../../styles/global';
 import Mapa from '../../components/MapClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Rutas from './AddClAx/rutas';
-
+import { render } from 'react-dom';
 
 export default function AddClient({ navigation }) {
 
+ 
 
   const rutas = Rutas();
 
@@ -55,6 +56,8 @@ const registrarTienda = async () => {
 
 //Retorno de login.js
   return (
+
+    
     <View style={globalStyles.screenContainer}>
       <Text style={globalStyles.title}>Nombre de la tienda</Text>
       <MyInput 

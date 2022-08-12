@@ -7,13 +7,11 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Splash from '../screens/Splash';
-import { restoreGPS, deleteGPS} from '../features/auth/auth';
 import { ActivityIndicator} from 'react-native';
 import { setLat, setLon, } from '../features/auth/auth';
 
 export default function Home() {
 
-   const dispatch = useDispatch();
   const carImage = require('../../assets/image/tienda4.png')
   const [origin, setOrigin] = React.useState({
 
@@ -21,48 +19,30 @@ export default function Home() {
     longitude:        1.0
 
   });
+ 
 
 
   React.useEffect(() => {
+
+   
     getLocationPermission();
-  
+
+
+
   }, [])
 
- //Gurda localmente ubicación el usuario
- async function setLongitude(value) {
-  try {
-    await AsyncStorage.setItem('@longstore',''+value);
-    dispatch(setLon(value));
-    console.log('Longitud local ='+ value);
-  } catch (error) {
-    console.log(error);
-  }
-}
 
-async function setLatitude(value) {
-  try {
-    await AsyncStorage.setItem('@latistore',''+value);
-    dispatch(setLat(value));
-    console.log('Latitud local='+ value);
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 
   async function getLocationPermission() {
 
 
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if(status !== 'granted') {
-      alert('Permission denied');
-      return;
-    }
-    let location = await Location.getCurrentPositionAsync({});
+    const lati = await AsyncStorage.getItem('@latistore');
+   const long = await AsyncStorage.getItem('@longstore');
 
     const current = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
+      latitude: parseFloat(lati),
+      longitude:parseFloat(long),
       latitudeDelta: 0.001,
       longitudeDelta: 0.001,
   
@@ -70,15 +50,55 @@ async function setLatitude(value) {
 
  
     setOrigin(current);
-    setLatitude(current.latitude);
-    setLongitude(current.longitude);
+  
+   // setLatitude(current.latitude);
+   // setLongitude(current.longitude);
     
   }
-  async function updateMarker(current) {
 
-    setLatitude(current.latitude);
-    setLongitude(current.longitude);
+  async function Markerefesh() {
+
+ 
+    const current = {
+      latitude: 0.0,
+      longitude:0.0,
+    }
+
+ 
+    setOrigin(current);
+
+  }
+
+
+  async function updateMarker(markerpsition) {
+
+
+
+
+    const interval = setInterval(() => {
+      Markerefesh();
+      getLocationPermission();
+      clearInterval(interval);
+    }, 10000);
+
+
+
     
+
+  }
+
+  async function asignOrignin(sss) {
+
+   const lati = await AsyncStorage.getItem('@latistore');
+   const long = await AsyncStorage.getItem('@longstore');
+
+   const current = {
+    latitude: parseFloat(lati),
+    longitude:parseFloat(long),
+  
+
+  }
+    return current;
   }
 
   return (
@@ -106,7 +126,8 @@ async function setLatitude(value) {
             coordinate={origin}
             image={carImage}
             onDragEnd={(direction) => updateMarker(direction.nativeEvent.coordinate)}
-            
+    
+          
           />
 
       </MapView> 
