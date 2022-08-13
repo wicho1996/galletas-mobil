@@ -26,10 +26,15 @@ export default function Home() {
 
    
     getLocationPermission();
+<<<<<<< Updated upstream
 
 
 
   }, [])
+=======
+  
+  }, []);
+>>>>>>> Stashed changes
 
 
 
