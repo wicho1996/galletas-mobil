@@ -1,18 +1,17 @@
 import * as React from 'react';
-import * as Location from 'expo-location';
 import { View , StyleSheet, Dimensions, Text } from 'react-native';
 import { Colors } from '../constants/colors';
 import { globalStyles } from '../styles/global';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Splash from '../screens/Splash';
 import { ActivityIndicator} from 'react-native';
-import { setLat, setLon, } from '../features/auth/auth';
+import {  setLonmove, setLatmove } from '../features/auth/auth';
 
 export default function Home() {
 
   const carImage = require('../../assets/image/tienda4.png')
+  const dispatch = useDispatch();
   const [origin, setOrigin] = React.useState({
 
     latitude:         0.0,
@@ -37,9 +36,9 @@ export default function Home() {
   async function getLocationPermission() {
 
 
-    const lati = await AsyncStorage.getItem('@latistore');
-   const long = await AsyncStorage.getItem('@longstore');
-
+   const lati = await AsyncStorage.getItem('@latistore');
+   const long = await AsyncStorage.getItem('@longstore')
+   
     const current = {
       latitude: parseFloat(lati),
       longitude:parseFloat(long),
@@ -51,8 +50,7 @@ export default function Home() {
  
     setOrigin(current);
   
-   // setLatitude(current.latitude);
-   // setLongitude(current.longitude);
+  
     
   }
 
@@ -73,32 +71,40 @@ export default function Home() {
   async function updateMarker(markerpsition) {
 
 
+    const lati = await AsyncStorage.getItem('@latistore');
+    const long = await AsyncStorage.getItem('@longstore')
 
+
+    setLatitude(markerpsition.latitude);
+    setLongitude(markerpsition.longitude);
 
     const interval = setInterval(() => {
-      Markerefesh();
       getLocationPermission();
+      Markerefesh();
+      setLatitude(lati);
+      setLongitude(long);
       clearInterval(interval);
-    }, 10000);
+    }, 11000);
+  }
 
-
-
+  async function setLongitude(value) {
+    try {
+      await AsyncStorage.setItem('@longstoremove',''+value);
+      dispatch(setLonmove(value));
     
-
+    } catch (error) {
+      console.log(error);
+    }
   }
-
-  async function asignOrignin(sss) {
-
-   const lati = await AsyncStorage.getItem('@latistore');
-   const long = await AsyncStorage.getItem('@longstore');
-
-   const current = {
-    latitude: parseFloat(lati),
-    longitude:parseFloat(long),
   
-
-  }
-    return current;
+  async function setLatitude(value) {
+    try {
+      await AsyncStorage.setItem('@latistoremove',''+value);
+      dispatch(setLatmove(value));
+     
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

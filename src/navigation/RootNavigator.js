@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Splash from '../screens/Splash';;
 import * as Location from 'expo-location';
 import Rutas from './RootAx/rutas';
+import { setLat, setLon, setLonmove, setLatmove } from '../features/auth/auth';
 
 
 export default function RootNavigator() {
@@ -65,7 +66,8 @@ export default function RootNavigator() {
 
  
     setOrigin(current);
-    
+    setLatitude(current.latitude);
+    setLongitude(current.longitude);
 
     const valuetiemporeal = await AsyncStorage.getItem('@token');
     const valueid = await AsyncStorage.getItem('@id');
@@ -75,8 +77,6 @@ export default function RootNavigator() {
       console.log(""+valueid);
       updateBD(valueid,current.latitude,current.longitude);
    
-      console.log("Latitud tiempo real " + current.latitude);
-      console.log("Longitud tiempo real " + current.longitude);
     }
    
   }
@@ -97,7 +97,26 @@ export default function RootNavigator() {
       console.log(error);
     }
   }
-
+  async function setLongitude(value) {
+    try {
+      await AsyncStorage.setItem('@longstore',''+value);
+      dispatch(setLon(value));
+      dispatch(setLonmove(value));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  async function setLatitude(value) {
+    try {
+      await AsyncStorage.setItem('@latistore',''+value);
+      dispatch(setLat(value));
+      dispatch(setLatmove(value));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   if (isLoading) {
     return <Splash />;
   }

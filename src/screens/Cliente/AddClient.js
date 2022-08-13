@@ -7,7 +7,6 @@ import { globalStyles } from '../../styles/global';
 import Mapa from '../../components/MapClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Rutas from './AddClAx/rutas';
-import { render } from 'react-dom';
 
 export default function AddClient({ navigation }) {
 
@@ -32,24 +31,48 @@ const handleOnChangeText = (value, fieldName) => {
 //AxiosConexion
 const registrarTienda = async () => {
   
-  
   const lati = await AsyncStorage.getItem('@latistore');
   const long = await AsyncStorage.getItem('@longstore');
+  const latim = await AsyncStorage.getItem('@latistoremove');
+  const longm = await AsyncStorage.getItem('@longstoremove');
 
-  console.log("Nombre tienda "+ tiendainfo.nombretienda);
-  console.log("tienda lati "+ lati);
-  console.log("tienda long "+ long );
+
+  if(lati !== latim || long !== longm ){
+
+    console.log("Nombre tienda "+ tiendainfo.nombretienda);
+    console.log("tienda lati "+ latim);
+    console.log("tienda long "+ longm );
+
+    rutas.newClient(
+      res => {
+      
+          console.log(res.mensaje);
+          alert(res.mensaje);
+   
+      }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: latim, long: longm }
+    );
+
+  }else{
+
+    
+  
+    console.log("Nombre tienda "+ tiendainfo.nombretienda);
+    console.log("tienda lati "+ lati);
+    console.log("tienda long "+ long );
+
+    rutas.newClient(
+      res => {
+      
+          console.log(res.mensaje);
+          alert(res.mensaje);
+   
+      }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: lati, long: long }
+    );
+    
+
+  }
   
 
-
-  rutas.newClient(
-    res => {
-    
-        console.log(res.mensaje);
-        alert(res.mensaje);
- 
-    }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: lati, long: long }
-  );
 };
 
 
