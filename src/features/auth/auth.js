@@ -4,7 +4,6 @@ const initialState = {
   userToken: null,
   isLoading: true,
   isSignout: false,
-
   LongUbication: null,
   LatUbication: null,
   LatUbicationMove: null,

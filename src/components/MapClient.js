@@ -26,7 +26,8 @@ export default function Home() {
    
     getLocationPermission();
 
-
+    setLatitude(null);
+    setLongitude(null);
 
   }, [])
 
@@ -81,7 +82,8 @@ export default function Home() {
     const interval = setInterval(() => {
       getLocationPermission();
       Markerefesh();
-      setLatitude(lati);
+      
+      (lati);
       setLongitude(long);
       clearInterval(interval);
     }, 11000);

@@ -11,7 +11,6 @@ import Rutas from './AddClAx/rutas';
 export default function AddClient({ navigation }) {
 
  
-
   const rutas = Rutas();
 
   //Variables para login
@@ -30,6 +29,8 @@ const handleOnChangeText = (value, fieldName) => {
 
 //AxiosConexion
 const registrarTienda = async () => {
+
+if(tiendainfo.nombretienda !== ""){
   
   const lati = await AsyncStorage.getItem('@latistore');
   const long = await AsyncStorage.getItem('@longstore');
@@ -37,41 +38,41 @@ const registrarTienda = async () => {
   const longm = await AsyncStorage.getItem('@longstoremove');
 
 
-  if(lati !== latim || long !== longm ){
-
-    console.log("Nombre tienda "+ tiendainfo.nombretienda);
-    console.log("tienda lati "+ latim);
-    console.log("tienda long "+ longm );
+  if(latim !== null || longm !== null ){
 
     rutas.newClient(
       res => {
       
-          console.log(res.mensaje);
-          alert(res.mensaje);
+    
+
+        setTiendaInfo("");
+        navigation.goBack();
+        alert("se registro correctamente");
    
-      }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: latim, long: longm }
+      }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: latim, long: longm}
     );
 
   }else{
 
-    
   
-    console.log("Nombre tienda "+ tiendainfo.nombretienda);
-    console.log("tienda lati "+ lati);
-    console.log("tienda long "+ long );
-
     rutas.newClient(
       res => {
       
-          console.log(res.mensaje);
-          alert(res.mensaje);
-   
+         
+          setTiendaInfo("");
+          navigation.goBack();
+          alert("se registro correctamente");
+      
+          navigation.openDrawer();
       }, {tipot: 1 ,tienda: tiendainfo.nombretienda , status: 1,lat: lati, long: long }
     );
     
 
   }
-  
+}else{
+
+  alert("Agregar nombre del la tienda");
+}
 
 };
 
